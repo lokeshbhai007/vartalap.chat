@@ -27,9 +27,15 @@ app.get("/", (req, res) =>{
 app.use("/api/auth", authRoutes )
 app.use("/api/messages", messageRoutes )
 
-dbConnect();
-app.listen(port, ()=>{
-    console.log(`Server running at ${port}`);
-    
-})
+dbConnect()
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`Server running on port: ${port}`);
+    });
+  })
+  .catch((err) => {
+    console.error("Failed to connect to MongoDB:", err);
+    process.exit(1);
+  });
+
 
